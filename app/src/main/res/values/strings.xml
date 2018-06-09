@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">BEST Bucharest Summer Course</string>
+
+    <string name="facebook_app_id">375115266332592</string>
+    <string name="fb_login_protocol_scheme">fb375115266332592</string>
+
+    <string name="login">Proceed by logging in</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+
 </resources>
