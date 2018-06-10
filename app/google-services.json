@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "427534615938",
+    "firebase_url": "https://summer-course-app.firebaseio.com",
+    "project_id": "summer-course-app",
+    "storage_bucket": "summer-course-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427534615938:android:d99727f411b30f17",
+        "android_client_info": {
+          "package_name": "com.summer_course"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427534615938-ao1a97km3eg5hju2gtr8cls2228ontkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.summer_course",
+            "certificate_hash": "e1e8487730956b75434dc1ccc75263debb64e044"
+          }
+        },
+        {
+          "client_id": "427534615938-g6e16cres6gh7pej3ck68aplgk5qtl92.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "427534615938-g6e16cres6gh7pej3ck68aplgk5qtl92.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh4w6rnzS52etGn9BKAQkec4lbU9ymGjQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427534615938-g6e16cres6gh7pej3ck68aplgk5qtl92.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
