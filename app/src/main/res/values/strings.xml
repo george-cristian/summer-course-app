@@ -8,4 +8,13 @@
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
 
+    <string name="register_title">Please select your role in this Summer Course</string>
+    <string-array name="role_entries">
+        <item>Participant</item>
+        <item>Core-team</item>
+        <item>Volunteer</item>
+        <item>Admin</item>
+    </string-array>
+    <string name="register_info">*your role will be validated by an admin. Until then you will have a basic account</string>
+
 </resources>

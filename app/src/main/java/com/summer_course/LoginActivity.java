@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             final boolean userExists = checkIfUserExists(loginResult.getAccessToken().getUserId());
 
             if (userExists == true) {
-                changeToDashboardActivity();
+                changeToRegisterActivity();
             } else {
                 changeToRegisterActivity();
             }
