@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DashboardActivity"
-    tools:showIn="@layout/activity_dashboard">
+    tools:showIn="@layout/activity_dashboard"
+    android:background="@color/bestColor"
+    android:orientation="vertical">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello world! This is the Dashboard!"
-        android:textSize="30dp"/>
+        android:layout_height="80dp"
+        android:src="@drawable/best_bucharest_white"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="20dp"/>
 
-</FrameLayout>
+    <GridView
+        android:id="@+id/grid_view_dashboard"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:columnWidth="200dp"
+        android:numColumns="2"
+        android:padding="2dp"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
+        android:stretchMode="spacingWidthUniform"/>
+
+</LinearLayout>
