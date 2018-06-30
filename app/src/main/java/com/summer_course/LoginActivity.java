@@ -1,15 +1,12 @@
 package com.summer_course;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -20,10 +17,9 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.summer_course.utils.ValueHolder;
+import com.summer_course.utils.Constants;
 
 /**
  * @author George Cristian
@@ -31,9 +27,6 @@ import com.summer_course.utils.ValueHolder;
 public class LoginActivity extends AppCompatActivity {
 
     private final String TAG = LoginActivity.class.getSimpleName();
-
-    private final String DASHBOARD_ACTIVITY = "com.summer_course.DashboardActivity";
-    private final String REGISTER_ACTIVITY = "com.summer_course.RegisterActivity";
 
     /* The facebook login button */
     private LoginButton loginButton;
@@ -44,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     /* Callback manager used for login purposes */
     private CallbackManager callbackManager;
 
+    /* Firebase Realtime Database instance */
     private FirebaseDatabase mFirebaseDatabase;
 
     @Override
@@ -67,14 +61,13 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
         loginButton.registerCallback(callbackManager, new CustomFacebookCallback());
-
     }
 
     /**
      * Starts the dashboard activity
      */
     private void changeToDashboardActivity() {
-        Intent dashboardIntent = new Intent(DASHBOARD_ACTIVITY);
+        Intent dashboardIntent = new Intent(Constants.DASHBOARD_ACTIVITY);
         startActivity(dashboardIntent);
     }
 
@@ -82,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
      * Starts the register activity
      */
     private void changeToRegisterActivity() {
-        Intent registerIntent = new Intent(REGISTER_ACTIVITY);
+        Intent registerIntent = new Intent(Constants.REGISTER_ACTIVITY);
         startActivity(registerIntent);
     }
 
@@ -107,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
             String userID = loginResult.getAccessToken().getUserId();
 
+            /* Query Firebase Realtime Database to check if the user id exists */
             mFirebaseDatabase.getReference().child(Constants.USERS_DATABASE).child(userID).
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -128,13 +122,11 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onCancel() {
-            /* Il intoarce la screen-ul de login */
             Log.i(TAG, "Login process canceled");
         }
 
         @Override
         public void onError(FacebookException e) {
-            /* Il intoarce la screen-ul de login */
             Log.e(TAG, "Login process error" + e.getMessage());
         }
 
