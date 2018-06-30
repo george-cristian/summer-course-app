@@ -17,6 +17,10 @@ public class DashboardAdapter extends BaseAdapter{
 
     private Context context;
 
+    private String[] optionsTexts = {"Schedule & Events", "Participants", "Chats", "Survival Guide"};
+    private int[] optionsImages =
+            {R.drawable.calendar, R.drawable.participants, R.drawable.chat, R.drawable.survival_guide};
+
     public DashboardAdapter(Context context) {
         this.context = context;
     }
@@ -44,13 +48,11 @@ public class DashboardAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.grid_item, null);
         }
 
-        //convertView.setBackground(R.color.);
-
         ImageView gridItemImageView = convertView.findViewById(R.id.grid_item_image);
         TextView textView = convertView.findViewById(R.id.grid_item_text);
 
-        textView.setText("Testy testy");
-        gridItemImageView.setImageResource(R.drawable.calendar);
+        textView.setText(optionsTexts[position]);
+        gridItemImageView.setImageResource(optionsImages[position]);
 
         return convertView;
     }

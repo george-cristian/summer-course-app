@@ -10,14 +10,14 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:src="@drawable/best_bucharest_white"
         android:layout_gravity="center_horizontal"
         android:paddingTop="20dp"/>
 
     <GridView
         android:id="@+id/grid_view_dashboard"
-        android:background="@color/black"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
