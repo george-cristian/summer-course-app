@@ -1,9 +1,15 @@
 package com.summer_course;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -12,6 +18,12 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.summer_course.utils.ValueHolder;
 
 /**
  * @author George Cristian
@@ -26,18 +38,28 @@ public class LoginActivity extends AppCompatActivity {
     /* The facebook login button */
     private LoginButton loginButton;
 
+    private TextView loginTextView;
+    private ProgressBar progressBar;
+
     /* Callback manager used for login purposes */
     private CallbackManager callbackManager;
+
+    private FirebaseDatabase mFirebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginButton = findViewById(R.id.facebook_login_button);
+        progressBar = findViewById(R.id.pb_loading_indicator);
+        loginTextView = findViewById(R.id.tv_login);
 
         /* Initialize facebook SDK */
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        /* Initialize Firebase Database */
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         LoginManager.getInstance().logOut();
 
@@ -77,19 +99,31 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onSuccess(LoginResult loginResult) {
-            /*Verifica daca utilizatorul se afla la prima logare:
-            * - da -> il trimite catre screen-ul de register
-            * - nu -> il trimite catre dashboard
-            * id-ul userului va fi in loginResult: loginResult.getAccessToken().getUserID()*/
 
-            final boolean userExists = checkIfUserExists(loginResult.getAccessToken().getUserId());
+            /* Display progress bar and make button and text view invisible */
+            progressBar.setVisibility(View.VISIBLE);
+            loginButton.setVisibility(View.INVISIBLE);
+            loginTextView.setVisibility(View.INVISIBLE);
 
-            if (userExists == true) {
-                changeToDashboardActivity();
-            } else {
-                changeToRegisterActivity();
-            }
+            String userID = loginResult.getAccessToken().getUserId();
 
+            mFirebaseDatabase.getReference().child(Constants.USERS_DATABASE).child(userID).
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        if (dataSnapshot.exists()) {
+                            changeToDashboardActivity();
+                        } else {
+                            changeToRegisterActivity();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d(TAG, "Database check cancelled");
+                    }
+                });
         }
 
         @Override
@@ -102,16 +136,6 @@ public class LoginActivity extends AppCompatActivity {
         public void onError(FacebookException e) {
             /* Il intoarce la screen-ul de login */
             Log.e(TAG, "Login process error" + e.getMessage());
-        }
-
-        /**
-         * Verify in database if the user already exists
-         *
-         * @param userID The users facebook ID to search
-         * @return If the user is already in the database or not
-         */
-        private boolean checkIfUserExists(String userID) {
-            return true;
         }
 
     }
