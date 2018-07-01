@@ -1,5 +1,11 @@
 package com.summer_course.utils;
 
+/**
+ * @author George Cristian
+ *
+ * Class that holds constants
+ *
+ */
 public class Constants {
 
     public static final String DASHBOARD_ACTIVITY = "com.summer_course.DashboardActivity";

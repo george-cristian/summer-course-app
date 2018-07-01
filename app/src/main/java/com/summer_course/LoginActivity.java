@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         /* Initialize CallbackManager */
         callbackManager = CallbackManager.Factory.create();
 
+        loginButton.setReadPermissions("public_profile");
         loginButton.registerCallback(callbackManager, new CustomFacebookCallback());
     }
 

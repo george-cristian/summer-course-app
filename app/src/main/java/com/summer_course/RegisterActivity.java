@@ -1,22 +1,26 @@
 package com.summer_course;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-
 import com.facebook.AccessToken;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.summer_course.database_classes.User;
+import com.summer_course.utils.BitmapUtils;
 import com.summer_course.utils.Constants;
+import com.summer_course.utils.FacebookUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -69,60 +73,57 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                int selectedItemPosition = roleSpinner.getSelectedItemPosition();
-                String userID = AccessToken.getCurrentAccessToken().getUserId();
-
-                User newUser = new User(selectedItemPosition, false);
-
-                mFirebaseDatabase.getReference().child(Constants.USERS_DATABASE).child(userID).
-                    setValue(newUser, new DatabaseReference.CompletionListener() {
+                /* Create Facebook Graph Request to get the name */
+                GraphRequest facebookGraphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
                         @Override
-                        public void onComplete(DatabaseError databaseError,
-                                               DatabaseReference databaseReference) {
-
-                            if (databaseError != null) {
-                                Log.d(TAG, "An error occured when writing to database: " +
-                                        databaseError.getMessage());
-                            } else {
-                                changeToDashboardActivity();
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            String userName = "";
+                            try {
+                                userName = object.getString("name");
+                            } catch (JSONException e) {
+                                Log.e(TAG, "Error at graph request");
                             }
 
+                            /* Create a new User object with the type, profile pic and name */
+                            String userID = AccessToken.getCurrentAccessToken().getUserId();
+                            int selectedItemPosition = roleSpinner.getSelectedItemPosition();
+                            Bitmap userProfilePic = FacebookUtils.getFacebookProfilePic(userID);
+                            String profilePicString = BitmapUtils.getStringFromBitmap(userProfilePic);
+
+                            User newUser = new User(selectedItemPosition, false, userName,
+                                    profilePicString);
+
+                            addUserToDatabaseAndGoToDashboard(newUser);
                         }
                     });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "name,picture");
+                facebookGraphRequest.setParameters(parameters);
+                facebookGraphRequest.executeAsync();
+
             }
         });
     }
 
-    private static class User {
+    private void addUserToDatabaseAndGoToDashboard(User newUser) {
+        String userID = AccessToken.getCurrentAccessToken().getUserId();
 
-        private int type;
-        private boolean validated;
+        mFirebaseDatabase.getReference().child(Constants.USERS_DATABASE).child(userID).
+            setValue(newUser, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError,
+                                       DatabaseReference databaseReference) {
 
-        public User() {
-            this.type = 0;
-            this.validated = false;
-        }
+                    if (databaseError != null) {
+                        Log.d(TAG, "An error occured when writing to database: " +
+                                databaseError.getMessage());
+                    } else {
+                        changeToDashboardActivity();
+                    }
 
-        public User(int type, boolean validated) {
-            this.type = type;
-            this.validated = validated;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public boolean isValidated() {
-            return validated;
-        }
-
-        public void setValidated(boolean validated) {
-            this.validated = validated;
-        }
+                }
+            });
     }
 
 }
