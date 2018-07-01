@@ -2,6 +2,7 @@ package com.summer_course.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.summer_course.R;
+import com.summer_course.utils.Constants;
 
 public class DashboardAdapter extends BaseAdapter{
 
@@ -54,6 +56,42 @@ public class DashboardAdapter extends BaseAdapter{
         textView.setText(optionsTexts[position]);
         gridItemImageView.setImageResource(optionsImages[position]);
 
+        convertView.setOnClickListener(getClickListenerForPosition(position));
+
         return convertView;
+    }
+
+    private View.OnClickListener getClickListenerForPosition(final int position) {
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (position) {
+                    case 0:
+                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        break;
+                    case 1:
+                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        break;
+                    case 2:
+                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        break;
+                    case 3:
+                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        break;
+                    default:
+                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        break;
+                }
+            }
+        };
+
+        return clickListener;
+
+    }
+
+    private void startActivity(String activityString) {
+        Intent changeActivityIntent = new Intent(activityString);
+        context.startActivity(changeActivityIntent);
     }
 }
