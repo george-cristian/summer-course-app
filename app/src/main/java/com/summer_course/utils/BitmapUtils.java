@@ -1,6 +1,7 @@
 package com.summer_course.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 
@@ -24,6 +25,12 @@ public class BitmapUtils {
         byte[] byteArray = outputStream.toByteArray();
         String bitmapString = Base64.encodeToString(byteArray, Base64.DEFAULT);
         return bitmapString;
+    }
+
+    public static Bitmap getBitmapFromString(String bitmapString) {
+        byte[] encodedBytes = Base64.decode(bitmapString, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(encodedBytes, 0, encodedBytes.length);
+        return bitmap;
     }
 
 }

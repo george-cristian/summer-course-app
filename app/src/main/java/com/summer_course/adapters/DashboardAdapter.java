@@ -47,7 +47,7 @@ public class DashboardAdapter extends BaseAdapter{
 
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            convertView = inflater.inflate(R.layout.grid_item, null);
+            convertView = inflater.inflate(R.layout.grid_item_dashboard, null);
         }
 
         ImageView gridItemImageView = convertView.findViewById(R.id.grid_item_image);
