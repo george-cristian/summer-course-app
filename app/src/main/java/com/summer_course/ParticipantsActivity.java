@@ -84,12 +84,13 @@ public class ParticipantsActivity extends AppCompatActivity {
                 List<User> organisersList = new ArrayList<>();
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String userID = ds.getKey();
                     int userType = ds.child("type").getValue(Integer.class);
                     String userName = ds.child("name").getValue(String.class);
                     String profilePicString = ds.child("profilePicString").getValue(String.class);
                     boolean validated = ds.child("validated").getValue(Boolean.class);
 
-                    User tempUser = new User(userType, validated, userName, profilePicString);
+                    User tempUser = new User(userID, userType, validated, userName, profilePicString);
 
                     if (userType == 0) {
                         participantsList.add(tempUser);

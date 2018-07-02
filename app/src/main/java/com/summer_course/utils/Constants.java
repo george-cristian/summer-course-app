@@ -12,10 +12,13 @@ public class Constants {
     public static final String REGISTER_ACTIVITY = "com.summer_course.RegisterActivity";
     public static final String PARTICIPANTS_ACTIVITY = "com.summer_course.ParticipantsActivity";
     public static final String SCHEDULE_ACTIVITY = "com.summer_course.ScheduleActivity";
+    public static final String EVENT_PROFILE_ACTIVITY = "com.summer_course.EventProfileActivity";
 
     public static final String USERS_DATABASE = "users";
     public static final String EVENTS_DATABASE = "events";
 
     public static final String[] USER_ROLES = {"Participant", "Core-team", "Volunteer", "Admin"};
+
+    public static final String SCHEDULE_EVENT = "schedule_event";
 
 }

@@ -19,7 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.summer_course.database_classes.User;
 import com.summer_course.utils.Constants;
+import com.summer_course.utils.SummerCourseApplication;
 
 /**
  * @author George Cristian
@@ -99,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             loginButton.setVisibility(View.INVISIBLE);
             loginTextView.setVisibility(View.INVISIBLE);
 
-            String userID = loginResult.getAccessToken().getUserId();
+            final String userID = loginResult.getAccessToken().getUserId();
 
             /* Query Firebase Realtime Database to check if the user id exists */
             mFirebaseDatabase.getReference().child(Constants.USERS_DATABASE).child(userID).
@@ -108,6 +110,14 @@ public class LoginActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         progressBar.setVisibility(View.INVISIBLE);
                         if (dataSnapshot.exists()) {
+                            String name = dataSnapshot.child("name").getValue(String.class);
+                            String profilePicString = dataSnapshot.child("profilePicString").getValue(String.class);
+                            int type = dataSnapshot.child("type").getValue(Integer.class);
+                            boolean validated = dataSnapshot.child("validated").getValue(Boolean.class);
+
+                            User currentUser = new User(userID, type, validated, name, profilePicString);
+                            ((SummerCourseApplication)LoginActivity.this.getApplication()).setCurrentUser(currentUser);
+
                             changeToDashboardActivity();
                         } else {
                             changeToRegisterActivity();

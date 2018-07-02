@@ -1,5 +1,7 @@
 package com.summer_course.database_classes;
 
+import com.google.firebase.database.Exclude;
+
 /**
  * @author George Cristian
  *
@@ -13,15 +15,18 @@ public class User {
     private boolean validated;
     private String name;
     private String profilePicString;
+    private String userID;
 
     public User() {
         this.type = 0;
         this.validated = false;
         this.name = "";
         this.profilePicString = "";
+        this.userID = "";
     }
 
-    public User(int type, boolean validated, String name, String profilePicString) {
+    public User(String userID, int type, boolean validated, String name, String profilePicString) {
+        this.userID = userID;
         this.type = type;
         this.validated = validated;
         this.name = name;
@@ -58,5 +63,14 @@ public class User {
 
     public void setProfilePicString(String profilePicString) {
         this.profilePicString = profilePicString;
+    }
+
+    @Exclude
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

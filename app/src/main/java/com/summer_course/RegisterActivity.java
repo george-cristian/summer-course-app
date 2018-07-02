@@ -19,6 +19,8 @@ import com.summer_course.database_classes.User;
 import com.summer_course.utils.BitmapUtils;
 import com.summer_course.utils.Constants;
 import com.summer_course.utils.FacebookUtils;
+import com.summer_course.utils.SummerCourseApplication;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -91,9 +93,10 @@ public class RegisterActivity extends AppCompatActivity {
                             Bitmap userProfilePic = FacebookUtils.getFacebookProfilePic(userID);
                             String profilePicString = BitmapUtils.getStringFromBitmap(userProfilePic);
 
-                            User newUser = new User(selectedItemPosition, false, userName,
+                            User newUser = new User(userID, selectedItemPosition, false, userName,
                                     profilePicString);
 
+                            ((SummerCourseApplication)RegisterActivity.this.getApplication()).setCurrentUser(newUser);
                             addUserToDatabaseAndGoToDashboard(newUser);
                         }
                     });
