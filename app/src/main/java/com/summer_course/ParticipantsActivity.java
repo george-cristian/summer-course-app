@@ -121,8 +121,6 @@ public class ParticipantsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        /*getMenuInflater().inflate(R.menu.menu_participants, menu);
-        return true;*/
         return true;
     }
 
@@ -224,7 +222,7 @@ public class ParticipantsActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            // Return a ScheduleFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1, this.personsList);
         }
 

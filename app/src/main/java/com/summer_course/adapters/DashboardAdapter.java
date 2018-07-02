@@ -68,7 +68,7 @@ public class DashboardAdapter extends BaseAdapter{
             public void onClick(View v) {
                 switch (position) {
                     case 0:
-                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        startActivity(Constants.SCHEDULE_ACTIVITY);
                         break;
                     case 1:
                         startActivity(Constants.PARTICIPANTS_ACTIVITY);
