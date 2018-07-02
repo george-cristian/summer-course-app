@@ -2,25 +2,28 @@ package com.summer_course.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.summer_course.R;
 import com.summer_course.adapters.ScheduleItemsAdapter;
+import com.summer_course.database_classes.ScheduleEvent;
+
+import java.util.ArrayList;
 
 /**
- * A placeholder fragment containing a simple view.
+ * @author George Cristian
+ *
+ * Fragment which contains the {@link RecyclerView} used in the {@link com.summer_course.ScheduleActivity}.
  */
 public class ScheduleFragment extends Fragment {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
+
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_EVENTS_LIST = "events_list";
 
     public ScheduleFragment() {
     }
@@ -29,13 +32,12 @@ public class ScheduleFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static ScheduleFragment newInstance(int sectionNumber) {
+    public static ScheduleFragment newInstance(int sectionNumber, ArrayList<ScheduleEvent> eventsList) {
         ScheduleFragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        /**
-         * TODO Aici trebuie sa trimit ca si argument la fragment lista de eventuri din ziua respectiva
-         */
+        //Sending the events list as an argument to the fragment
+        args.putParcelableArrayList(ARG_EVENTS_LIST, eventsList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,18 +47,22 @@ public class ScheduleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        TextView textView = rootView.findViewById(R.id.section_label);
-        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        Bundle argumentsBundle = getArguments();
 
+        //Setting up the RecyclerView
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_schedule);
         LinearLayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        /**
-         * TODO Aici la adapter trebuie sa ii trimit lista de eventuri pentru ziua respectiva
-         */
-        ScheduleItemsAdapter scheduleItemsAdapter = new ScheduleItemsAdapter();
+        //Obtaining the events list from the bundle of arguments
+        ArrayList<ScheduleEvent> eventsList = argumentsBundle.getParcelableArrayList(ARG_EVENTS_LIST);
+        ScheduleItemsAdapter scheduleItemsAdapter = new ScheduleItemsAdapter(eventsList);
         recyclerView.setAdapter(scheduleItemsAdapter);
+
+        //Adding a divider between events
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         return rootView;
     }

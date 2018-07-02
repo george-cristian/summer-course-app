@@ -11,9 +11,28 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.summer_course.adapters.ScheduleSpinnerAdapter;
+import com.summer_course.database_classes.ScheduleEvent;
 import com.summer_course.fragments.ScheduleFragment;
+import com.summer_course.utils.Constants;
+import com.summer_course.utils.DateUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * @author George Cristian
+ *
+ * Activity in which the schedule is displayed.
+ */
 public class ScheduleActivity extends AppCompatActivity {
 
     @Override
@@ -21,7 +40,7 @@ public class ScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
-        Toolbar toolbar = findViewById(R.id.schedule_toolbar);
+        final Toolbar toolbar = findViewById(R.id.schedule_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -30,27 +49,72 @@ public class ScheduleActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow);
 
         // Setup spinner
-        Spinner spinner = findViewById(R.id.schedule_spinner);
-        spinner.setAdapter(new ScheduleSpinnerAdapter(
-                toolbar.getContext(),
-                new String[]{
-                        "Section 1",
-                        "Section 2",
-                        "Section 3",
-                }));
+        final Spinner spinner = findViewById(R.id.schedule_spinner);
 
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+        //Create a query to get all the events from the database
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseReference.child(Constants.EVENTS_DATABASE);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // When the given dropdown item is selected, show its contents in the
-                // container view.
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.schedule_container, ScheduleFragment.newInstance(position + 1))
-                        .commit();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                List<ScheduleEvent> eventsList = new ArrayList<>();
+
+                //Iterating through all the events and creating a list of them
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String eventID = ds.getKey();
+                    String title = ds.child("title").getValue(String.class);
+                    String description = ds.child("description").getValue(String.class);
+                    Long startTimestamp = ds.child("start").getValue(Long.class);
+                    Long stopTimestamp = ds.child("stop").getValue(Long.class);
+                    int type = ds.child("type").getValue(Integer.class);
+
+                    ScheduleEvent event =
+                            new ScheduleEvent(eventID, title, description, startTimestamp, stopTimestamp, type);
+                    eventsList.add(event);
+                }
+
+                //Sorting the list of events by start time
+                Collections.sort(eventsList, new Comparator<ScheduleEvent>() {
+                    @Override
+                    public int compare(ScheduleEvent o1, ScheduleEvent o2) {
+                        return o1.getStartTime().compareTo(o2.getStartTime());
+                    }
+                });
+
+                //Getting an array of strings which represent individual days
+                String[] scheduleDays = DateUtils.getAvailableDaysFromEventsList(eventsList);
+
+                spinner.setAdapter(new ScheduleSpinnerAdapter(
+                        toolbar.getContext(), scheduleDays));
+
+                //Obtaining a list of lists of events organised by each day
+                //Each list has all the events of one single day
+                final ArrayList<ArrayList<ScheduleEvent>> orderedEventsList =
+                        DateUtils.getOrderedListOfEvents(eventsList);
+
+                spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        // When the given dropdown item is selected, show its contents in the
+                        // container view.
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.schedule_container,
+                                        ScheduleFragment.newInstance(position + 1, orderedEventsList.get(position)))
+                                .commit();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 

@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * @author George Cristian
+ *
+ * Adapter class for the spinner in the {@link com.summer_course.ScheduleActivity}
+ */
 public class ScheduleSpinnerAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
     private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
