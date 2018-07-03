@@ -5,8 +5,11 @@ import android.os.Parcelable;
 
 import com.summer_course.utils.DateUtils;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * @author George Cristian
@@ -96,11 +99,37 @@ public class ScheduleEvent implements Parcelable {
         this.eventID = eventID;
     }
 
+    public void setEventStartTime(int hour, int minutes) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(this.getStartTime());
+
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minutes);
+
+        TimeZone timeZone = TimeZone.getTimeZone("Europe/Bucharest");
+        calendar.add(Calendar.MILLISECOND, -timeZone.getOffset(calendar.getTimeInMillis()));
+        this.startTimestamp = calendar.getTimeInMillis();
+    }
+
+    public void setEventEndTime(int hour, int minutes) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(this.getStopTime());
+
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minutes);
+
+        TimeZone timeZone = TimeZone.getTimeZone("Europe/Bucharest");
+        calendar.add(Calendar.MILLISECOND, -timeZone.getOffset(calendar.getTimeInMillis()));
+        this.stopTimestamp = calendar.getTimeInMillis();
+    }
+
     /**
      * Method that creates a string which is the concatenation of the starting hour and ending hour
      * of the event.
      *
-     * @return Concatenation of thr starting hour and ending hour of the event
+     * @return Concatenation of the starting hour and ending hour of the event
      */
     public String getHours() {
 
@@ -113,7 +142,69 @@ public class ScheduleEvent implements Parcelable {
         String endHour = dateFormat.format(stopDate);
 
         return startingHour + " - " + endHour;
+    }
 
+    public String getStartTimeAsString() {
+        Date startDate = this.getStartTime();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+
+        String startingHour =  dateFormat.format(startDate);
+
+        return startingHour;
+    }
+
+    public String getEndTimeAsString() {
+        Date stopDate = this.getStopTime();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+
+        String endHour = dateFormat.format(stopDate);
+
+        return endHour;
+    }
+
+    public int getStartHour() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(this.getStartTime());
+
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getEndHour() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(this.getStopTime());
+
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getStartMinutes() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(this.getStartTime());
+
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    public int getEndMinutes() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(this.getStopTime());
+
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    public boolean areHoursValid() {
+        Timestamp timestampStart = new Timestamp(startTimestamp);
+        Timestamp timestampEnd = new Timestamp(stopTimestamp);
+
+        if (timestampStart.after(timestampEnd)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
