@@ -15,6 +15,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ViewSwitcher;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.summer_course.database_classes.DatabaseEvent;
 import com.summer_course.database_classes.ScheduleEvent;
 import com.summer_course.utils.Constants;
 
@@ -27,6 +31,8 @@ public class EventProfileActivity extends AppCompatActivity {
     private Button btnCommitChanges;
     private Button btnEditStartTime;
     private Button btnEditEndTime;
+
+    private EditText descriptionEditView;
 
     private TextView startTimeTextView;
     private TextView endTimeTextView;
@@ -53,7 +59,7 @@ public class EventProfileActivity extends AppCompatActivity {
         endTimeTextView = findViewById(R.id.tv_event_end_time);
         TextView typeTextView = findViewById(R.id.tv_event_type);
 
-        EditText descriptionEditView = findViewById(R.id.et_event_description);
+        descriptionEditView = findViewById(R.id.et_event_description);
 
         errorTextView = findViewById(R.id.tv_error_hours);
         btnCommitChanges = findViewById(R.id.btn_edit_event);
@@ -84,6 +90,8 @@ public class EventProfileActivity extends AppCompatActivity {
         btnEditStartTime = findViewById(R.id.btn_edit_start_time);
         btnEditEndTime = findViewById(R.id.btn_edit_end_time);
         this.addListenersToEditTimeButtons();
+
+        this.addListenerToCommitButton();
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
@@ -148,6 +156,9 @@ public class EventProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Check if the dates are correct.
+     */
     public void validateHours() {
 
         if (scheduleEvent.areHoursValid() == false) {
@@ -160,6 +171,27 @@ public class EventProfileActivity extends AppCompatActivity {
             btnCommitChanges.setBackgroundColor(ContextCompat.getColor(this, R.color.bestColor));
         }
 
+    }
+
+    private void addListenerToCommitButton() {
+
+        btnCommitChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scheduleEvent.setDescription(descriptionEditView.getText().toString());
+                final DatabaseEvent event = new DatabaseEvent(scheduleEvent);
+
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+                databaseReference.child(Constants.EVENTS_DATABASE).child(scheduleEvent.getEventID()).
+                        setValue(event, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        EventProfileActivity.this.finish();
+                    }
+                });
+            }
+        });
     }
 
 }

@@ -35,13 +35,16 @@ import java.util.List;
  */
 public class ScheduleActivity extends AppCompatActivity {
 
+    private Spinner daysSpinner;
+    private Toolbar activityToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
-        final Toolbar toolbar = findViewById(R.id.schedule_toolbar);
-        setSupportActionBar(toolbar);
+        activityToolbar = findViewById(R.id.schedule_toolbar);
+        setSupportActionBar(activityToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //Setting up the back button
@@ -49,9 +52,19 @@ public class ScheduleActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back_arrow);
 
         // Setup spinner
-        final Spinner spinner = findViewById(R.id.schedule_spinner);
+        daysSpinner = findViewById(R.id.schedule_spinner);
 
         //Create a query to get all the events from the database
+        this.getEventsFromDatabase();
+
+
+    }
+
+    /**
+     * Run query to get events from database and populate the spinner and the interior fragments
+     * with data from the database.
+     */
+    private void getEventsFromDatabase() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         Query query = databaseReference.child(Constants.EVENTS_DATABASE);
 
@@ -86,15 +99,15 @@ public class ScheduleActivity extends AppCompatActivity {
                 //Getting an array of strings which represent individual days
                 String[] scheduleDays = DateUtils.getAvailableDaysFromEventsList(eventsList);
 
-                spinner.setAdapter(new ScheduleSpinnerAdapter(
-                        toolbar.getContext(), scheduleDays));
+                daysSpinner.setAdapter(new ScheduleSpinnerAdapter(
+                        activityToolbar.getContext(), scheduleDays));
 
                 //Obtaining a list of lists of events organised by each day
                 //Each list has all the events of one single day
                 final ArrayList<ArrayList<ScheduleEvent>> orderedEventsList =
                         DateUtils.getOrderedListOfEvents(eventsList);
 
-                spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+                daysSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         // When the given dropdown item is selected, show its contents in the
@@ -117,7 +130,13 @@ public class ScheduleActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void onResume() {
+        super.onResume();
+
+        //Retrieve again the events
+        this.getEventsFromDatabase();
     }
 
 

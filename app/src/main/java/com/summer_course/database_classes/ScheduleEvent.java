@@ -71,6 +71,14 @@ public class ScheduleEvent implements Parcelable {
         return DateUtils.getDateFromTimestamp(startTimestamp);
     }
 
+    public long getStartTimestamp() {
+        return this.startTimestamp;
+    }
+
+    public long getStopTimestamp() {
+        return this.stopTimestamp;
+    }
+
     public void setStartTimestamp(long startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
