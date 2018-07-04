@@ -74,10 +74,10 @@ public class DashboardAdapter extends BaseAdapter{
                         startActivity(Constants.PARTICIPANTS_ACTIVITY);
                         break;
                     case 2:
-                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        startActivity(Constants.CHATS_ACTIVITY);
                         break;
                     case 3:
-                        startActivity(Constants.PARTICIPANTS_ACTIVITY);
+                        startActivity(Constants.SURVIVAL_GUIDE_ACTIVITY);
                         break;
                     default:
                         startActivity(Constants.PARTICIPANTS_ACTIVITY);

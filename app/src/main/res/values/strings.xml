@@ -27,5 +27,9 @@
 
     <string name="event_time_error">End time is after start time. Please select some valid hours.</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="title_activity_chats">Summer Course Chats</string>
+    <string name="chats_view_error">Your account is not validated. Wait until your account is validated to enter chat rooms.</string>
+    <string name="sg_view_error">Your account is not validated. Wait until your account is validated to download the Survival Guide.</string>
+    <string name="title_activity_survival_guide">Survival Guide</string>
 
 </resources>

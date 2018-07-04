@@ -22,6 +22,16 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name=".GenericFileProvider"
+            android:authorities="com.summer_course"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -113,6 +123,36 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="com.summer_course.UserProfileActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ChatsActivity"
+            android:label="@string/title_activity_chats"
+            android:parentActivityName=".DashboardActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.summer_course.DashboardActivity" />
+
+            <intent-filter>
+                <action android:name="com.summer_course.ChatsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SurvivalGuideActivity"
+            android:label="@string/title_activity_survival_guide"
+            android:parentActivityName=".DashboardActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.summer_course.DashboardActivity" />
+
+            <intent-filter>
+                <action android:name="com.summer_course.SurvivalGuideActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ChatsActivity"
+    tools:showIn="@layout/activity_chats"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chat_header"/>
+
+    <TextView
+        android:id="@+id/tv_error_chats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:text="@string/chats_view_error"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginTop="5dp"/>
+
+    <Button
+        android:id="@+id/btn_view_organisers_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Organisers Chat"
+        android:textColor="@color/white"
+        android:background="@color/bestColor"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/btn_view_pax_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Participants Chat"
+        android:textColor="@color/white"
+        android:background="@color/bestColor"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+
+
+</LinearLayout>

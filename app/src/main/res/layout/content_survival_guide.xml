@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".SurvivalGuideActivity"
+    tools:showIn="@layout/activity_survival_guide"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sc_header"/>
+
+    <TextView
+        android:id="@+id/tv_error_sg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:text="@string/sg_view_error"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_marginTop="5dp"/>
+
+    <Button
+        android:id="@+id/btn_download_sg"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="Download Survival Guide"
+        android:textColor="@color/white"
+        android:background="@color/bestColor"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        />
+
+
+
+</LinearLayout>
