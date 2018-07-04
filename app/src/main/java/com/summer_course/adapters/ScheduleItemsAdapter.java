@@ -81,8 +81,6 @@ public class ScheduleItemsAdapter extends RecyclerView.Adapter<ScheduleItemsAdap
 
     class EventClickListener implements View.OnClickListener {
 
-
-
         private ScheduleEvent event;
         private Context context;
 
