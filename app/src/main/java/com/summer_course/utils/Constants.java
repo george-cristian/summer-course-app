@@ -21,4 +21,9 @@ public class Constants {
 
     public static final String SCHEDULE_EVENT = "schedule_event";
 
+    public static final int PARTICIPANT = 0;
+    public static final int VOLUNTEER = 1;
+    public static final int CORE_TEAM_MEMBER = 2;
+    public static final int ADMIN = 3;
+
 }

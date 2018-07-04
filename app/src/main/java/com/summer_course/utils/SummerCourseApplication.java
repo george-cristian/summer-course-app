@@ -15,4 +15,12 @@ public class SummerCourseApplication extends Application {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
+
+    public boolean isCurrentUserValidated() {
+        return currentUser.isValidated();
+    }
+
+    public int getCurrentUserType() {
+        return currentUser.getType();
+    }
 }

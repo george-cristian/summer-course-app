@@ -20,6 +20,7 @@ import com.summer_course.adapters.DashboardAdapter;
 import com.summer_course.adapters.ValidateUsersAdapter;
 import com.summer_course.database_classes.User;
 import com.summer_course.utils.Constants;
+import com.summer_course.utils.SummerCourseApplication;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,18 @@ public class DashboardActivity extends AppCompatActivity {
         tvUsersToBeValidated = findViewById(R.id.tv_users_to_be_validated);
 
         setupGridView();
-        setupValidateUsersRecyclerView();
+
+        boolean isCurrentUserValidated = ((SummerCourseApplication)getApplication()).isCurrentUserValidated();
+        int currentUserType = ((SummerCourseApplication)getApplication()).getCurrentUserType();
+        final boolean isUserCoreTeamOrAdmin = (currentUserType == Constants.CORE_TEAM_MEMBER ||
+                currentUserType == Constants.ADMIN);
+
+        if (isCurrentUserValidated == true && isUserCoreTeamOrAdmin == true) {
+            setupValidateUsersRecyclerView();
+        } else {
+            tvUsersToBeValidated.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private void setupGridView() {

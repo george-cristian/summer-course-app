@@ -21,7 +21,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.summer_course.database_classes.DatabaseEvent;
 import com.summer_course.database_classes.ScheduleEvent;
 import com.summer_course.utils.Constants;
+import com.summer_course.utils.SummerCourseApplication;
 
+/**
+ * @author George Cristian
+ *
+ * Acitivty which displays information about the event that user clicked. If the user is a member
+ * of the core team, he can edit the information.
+ */
 public class EventProfileActivity extends AppCompatActivity {
 
     private ScheduleEvent scheduleEvent;
@@ -85,13 +92,24 @@ public class EventProfileActivity extends AppCompatActivity {
         descriptionEditView.setText(scheduleEvent.getDescription());
 
         viewSwitcherDescription = findViewById(R.id.view_switcher_description);
-        viewSwitcherDescription.showNext();
 
         btnEditStartTime = findViewById(R.id.btn_edit_start_time);
         btnEditEndTime = findViewById(R.id.btn_edit_end_time);
-        this.addListenersToEditTimeButtons();
 
-        this.addListenerToCommitButton();
+        boolean isCurrentUserValidated = ((SummerCourseApplication)getApplication()).isCurrentUserValidated();
+        int currentUserType = ((SummerCourseApplication)getApplication()).getCurrentUserType();
+        final boolean isUserCoreTeamOrAdmin = (currentUserType == Constants.CORE_TEAM_MEMBER ||
+                currentUserType == Constants.ADMIN);
+
+        if (isUserCoreTeamOrAdmin && isCurrentUserValidated) {
+            viewSwitcherDescription.showNext();
+            this.addListenersToEditTimeButtons();
+            this.addListenerToCommitButton();
+        } else {
+            btnEditEndTime.setVisibility(View.INVISIBLE);
+            btnEditStartTime.setVisibility(View.INVISIBLE);
+            btnCommitChanges.setVisibility(View.INVISIBLE);
+        }
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
