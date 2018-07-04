@@ -80,8 +80,8 @@ public class ParticipantsActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<User> participantsList = new ArrayList<>();
-                List<User> organisersList = new ArrayList<>();
+                ArrayList<User> participantsList = new ArrayList<>();
+                ArrayList<User> organisersList = new ArrayList<>();
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String userID = ds.getKey();
@@ -149,8 +149,7 @@ public class ParticipantsActivity extends AppCompatActivity {
     public static class PlaceholderFragment extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private static final String ARG_PEOPLE_NAMES = "people_names";
-        private static final String ARG_PEOPLE_PICS = "people_pics";
+        private static final String ARG_PERSONS_LIST = "persons_list";
 
         private static final int PARTICIPANTS_TAB = 1;
         private static final int ORGANISERS_TAB = 2;
@@ -167,20 +166,15 @@ public class ParticipantsActivity extends AppCompatActivity {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, tabNumber);
-            ArrayList<String> peopleNames;
-            ArrayList<String> peoplePics;
+            ArrayList<User> participantsList;
 
             if (tabNumber == PARTICIPANTS_TAB) {
-                peopleNames = personsList.getParticipantsNames();
-                peoplePics = personsList.getParticipantsPics();
+                participantsList = personsList.getParticipantsList();
             } else {
-                peopleNames = personsList.getOrganisersNames();
-                peoplePics = personsList.getOrganisersPics();
+                participantsList = personsList.getOrganisersList();
             }
 
-            //Send the names and pictures as arguments to the new fragment
-            args.putStringArrayList(ARG_PEOPLE_NAMES, peopleNames);
-            args.putStringArrayList(ARG_PEOPLE_PICS, peoplePics);
+            args.putParcelableArrayList(ARG_PERSONS_LIST, participantsList);
 
             fragment.setArguments(args);
             return fragment;
@@ -195,11 +189,9 @@ public class ParticipantsActivity extends AppCompatActivity {
 
             GridView gridView = rootView.findViewById(R.id.grid_view_participants);
 
-            //Retrieve the names and the pictures from the arguments bundle
-            ArrayList<String> peopleNames = argumentsBundle.getStringArrayList(ARG_PEOPLE_NAMES);
-            ArrayList<String> peoplePics = argumentsBundle.getStringArrayList(ARG_PEOPLE_PICS);
+            ArrayList<User> personsList = argumentsBundle.getParcelableArrayList(ARG_PERSONS_LIST);
 
-            BaseAdapter gridViewAdapter = new ParticipantsAdapter(inflater, peopleNames, peoplePics);
+            BaseAdapter gridViewAdapter = new ParticipantsAdapter(inflater, personsList);
 
             gridView.setAdapter(gridViewAdapter);
 

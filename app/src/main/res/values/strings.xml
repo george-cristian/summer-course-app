@@ -26,5 +26,6 @@
     <string name="title_activity_event_profile">EventProfileActivity</string>
 
     <string name="event_time_error">End time is after start time. Please select some valid hours.</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
 
 </resources>

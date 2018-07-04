@@ -1,6 +1,8 @@
 package com.summer_course.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,7 +45,7 @@ public class ValidateUsersAdapter extends RecyclerView.Adapter<ValidateUsersAdap
         final boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
-        UserViewHolder viewHolder = new UserViewHolder(view);
+        UserViewHolder viewHolder = new UserViewHolder(view, parent);
 
         return viewHolder;
     }
@@ -73,16 +75,27 @@ public class ValidateUsersAdapter extends RecyclerView.Adapter<ValidateUsersAdap
 
         private TextView userNameTextView;
         private Button validateUserButton;
+        private ViewGroup parent;
 
-        public UserViewHolder(View itemView) {
+        public UserViewHolder(View itemView, ViewGroup parent) {
             super(itemView);
-
+            this.parent = parent;
             userNameTextView = itemView.findViewById(R.id.tv_validate_user_name);
             validateUserButton = itemView.findViewById(R.id.btn_validate_user);
         }
 
-        public void bind(User user, int position) {
+        public void bind(final User user, int position) {
             userNameTextView.setText(user.getName());
+
+            userNameTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Constants.USER_PROFILE_ACTIVITY);
+                    intent.putExtra(Constants.USER_PROFILE, user);
+                    parent.getContext().startActivity(intent);
+                }
+            });
+
             validateUserButton.setOnClickListener(new ValidateUserClickListener(user, position));
         }
 

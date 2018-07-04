@@ -1,5 +1,8 @@
 package com.summer_course.database_classes;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.Exclude;
 
 /**
@@ -9,7 +12,7 @@ import com.google.firebase.database.Exclude;
  * user is written in the database.
  *
  */
-public class User {
+public class User implements Parcelable {
 
     private int type;
     private boolean validated;
@@ -31,6 +34,14 @@ public class User {
         this.validated = validated;
         this.name = name;
         this.profilePicString = profilePicString;
+    }
+
+    public User(Parcel parcel) {
+        this.userID = parcel.readString();
+        this.name = parcel.readString();
+        this.profilePicString = parcel.readString();
+        this.type = parcel.readInt();
+        this.validated = parcel.readByte() != 0;
     }
 
     public int getType() {
@@ -73,4 +84,30 @@ public class User {
     public void setUserID(String userID) {
         this.userID = userID;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.userID);
+        dest.writeString(this.name);
+        dest.writeString(this.profilePicString);
+        dest.writeInt(this.type);
+        dest.writeByte((byte) (this.validated ? 1 : 0));
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

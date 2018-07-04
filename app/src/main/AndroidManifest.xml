@@ -100,8 +100,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.summer_course.ScheduleActivity" />
+
             <intent-filter>
                 <action android:name="com.summer_course.EventProfileActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="@string/title_activity_user_profile"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="com.summer_course.UserProfileActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

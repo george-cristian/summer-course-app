@@ -10,52 +10,27 @@ import java.util.List;
  */
 public class ParticipantsAndOrganisersList {
 
-    private List<User> participantsList;
-    private List<User> organisersList;
+    private ArrayList<User> participantsList;
+    private ArrayList<User> organisersList;
 
-    public ParticipantsAndOrganisersList(List<User> participantsList, List<User> organisersList) {
+    public ParticipantsAndOrganisersList(ArrayList<User> participantsList, ArrayList<User> organisersList) {
         this.participantsList = participantsList;
         this.organisersList = organisersList;
     }
 
-    public ArrayList<String> getParticipantsNames() {
-        ArrayList<String> participantsNames = new ArrayList<>();
-
-        for (User user : participantsList) {
-            participantsNames.add(user.getName());
-        }
-
-        return participantsNames;
+    public ArrayList<User> getParticipantsList() {
+        return participantsList;
     }
 
-    public ArrayList<String> getOrganisersNames() {
-        ArrayList<String> organisersNames = new ArrayList<>();
-
-        for (User user : organisersList) {
-            organisersNames.add(user.getName());
-        }
-
-        return organisersNames;
+    public void setParticipantsList(ArrayList<User> participantsList) {
+        this.participantsList = participantsList;
     }
 
-    public ArrayList<String> getParticipantsPics() {
-        ArrayList<String> participantsPics = new ArrayList<>();
-
-        for (User user : participantsList) {
-            participantsPics.add(user.getProfilePicString());
-        }
-
-        return participantsPics;
+    public ArrayList<User> getOrganisersList() {
+        return organisersList;
     }
 
-    public ArrayList<String> getOrganisersPics() {
-        ArrayList<String> organisersPics = new ArrayList<>();
-
-        for (User user : organisersList) {
-            organisersPics.add(user.getProfilePicString());
-        }
-
-        return organisersPics;
+    public void setOrganisersList(ArrayList<User> organisersList) {
+        this.organisersList = organisersList;
     }
-
 }
